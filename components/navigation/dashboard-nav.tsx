@@ -10,7 +10,7 @@ export default function DashboardNav({ allLinks }: {
     const pathname = usePathname()
     return (
         <nav className="overflow-auto mt-5 h-14">
-            <ul className="flex gap-6 font-bold text-sm">
+            <ul className="flex gap-10 font-bold text-sm justify-center">
                 <AnimatePresence>
                     {allLinks.map((link) => (
                         <motion.li whileTap={{ scale: 0.9 }} key={link.label}>
