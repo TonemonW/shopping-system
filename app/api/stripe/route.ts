@@ -26,14 +26,14 @@ export async function POST(req: NextRequest) {
         })
     }
     switch (event.type) {
-        case "payment_intent.succeeded":
+        case "payment_intent.succeeded": {
             const retrieveOrder = await stripe.paymentIntents.retrieve(
                 event.data.object.id,
                 { expand: ["latest_charge"] }
             )
             const charge = retrieveOrder.latest_charge as Stripe.Charge
 
-            await db
+            const customer = await db
                 .update(orders)
                 .set({
                     status: "succeeded",
@@ -42,6 +42,7 @@ export async function POST(req: NextRequest) {
                 .where(eq(orders.paymentIntentID, event.data.object.id))
                 .returning()
             break
+        }
         default:
             console.log(`Unhandled event type ${event.type}`)
     }
