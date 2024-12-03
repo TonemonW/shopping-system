@@ -62,8 +62,8 @@ export default function PaymentForm({ totalPrice }: { totalPrice: number }) {
         });
 
         // Check if there was an error in the result
-        if (result.data?.error) {
-            setErrorMessage(result.data.error);
+        if (!result || result.data?.error) {
+            setErrorMessage(result?.data?.error || "An unknown error occurred");
             setIsLoading(false);
             return;
         }
