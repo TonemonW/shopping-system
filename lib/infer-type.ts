@@ -7,7 +7,7 @@ import * as schema from "@/server/schema"
 
 type Schema = typeof schema
 type TSchema = ExtractTablesWithRelations<Schema>
-export type IncludeRelation<TableName extends keyof TSchema> = DBQueryconfig<
+export type IncludeRelation<TableName extends keyof TSchema> = DBQueryConfig<
     "one" | "many",
     boolean,
     TSchema,
