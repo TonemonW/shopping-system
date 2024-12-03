@@ -66,7 +66,7 @@ export default function ProductForm() {
         if (editMode) {
             checkProduct(parseInt(editMode))
         }
-    }, [])
+    })
 
 
     const { execute, status } = useAction(createProduct, {
@@ -76,7 +76,7 @@ export default function ProductForm() {
                 toast.success(response.data.success)
             }
         },
-        onExecute: (response) => {
+        onExecute: () => {
             if (editMode) { toast.loading("Editing Product") }
             if (!editMode) {
                 toast.loading("creating Product")
