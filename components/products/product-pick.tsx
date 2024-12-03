@@ -22,7 +22,7 @@ export default function ProductPick({
 }) {
     const router = useRouter()
     const searchParams = useSearchParams()
-    const selectedcolor = searchParams.get("type" || productType)
+    const selectedcolor = searchParams.get(productType || "type")
     return (
         <div
             style={{ background: color }}
