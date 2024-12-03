@@ -82,7 +82,7 @@ export default function Earnings({ totalOrders }: { totalOrders: TotalOrders[] }
                                             return (
                                                 <div
                                                     className="bg-primary py-2 px-4 rounded-md"
-                                                    key={item.payload.date + item.id}>
+                                                    key={item.payload.date}>
                                                     <p>Revenue: ${item.value}</p>
                                                     <p>Date: {item.payload.date}</p>
                                                 </div>
