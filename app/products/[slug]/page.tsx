@@ -30,7 +30,7 @@ export async function generateStaticParams() {
 }
 
 export default async function Page({ params }: { params: { slug: string } }) {
-    const { slug } = await params;
+    const { slug } = params;
     const variant = await db.query.productVariants.findFirst({
         where: eq(productVariants.id, Number(slug)),
         with: {
