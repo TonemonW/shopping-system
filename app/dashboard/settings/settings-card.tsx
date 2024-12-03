@@ -35,20 +35,20 @@ import { OurFileRouter } from "../../api/uploadthing/core";
 type SettingsForm = {
     session: Session
 }
+
 export default function SettingsCard(session: SettingsForm) {
     const [error, setError] = useState<string | undefined>(undefined)
     const [success, setSuccess] = useState<string | undefined>(undefined)
     const [avatarUploading, setAvatarUploading] = useState(false)
 
-
     const form = useForm<z.infer<typeof SettingsSchema>>({
         resolver: zodResolver(SettingsSchema),
         defaultValues: {
-            password: undefined,
-            newPassword: undefined,
-            name: session.session.user?.name || undefined,
-            email: session.session.user?.email || undefined,
-            image: session.session.user?.image || undefined,
+            password: "",
+            newPassword: "",
+            name: session.session.user?.name || "",
+            email: session.session.user?.email || "",
+            image: session.session.user?.image || "",
             isTwoFactorEnabled: session.session.user?.isTwoFactorEnabled || false
         },
     });
@@ -179,7 +179,7 @@ export default function SettingsCard(session: SettingsForm) {
                             name="newPassword"
                             render={({ field }) => (
                                 <FormItem>
-                                    <FormLabel className="block">Password</FormLabel>
+                                    <FormLabel className="block">New Password</FormLabel>
                                     <FormControl>
                                         <input
                                             {...field}
@@ -205,23 +205,6 @@ export default function SettingsCard(session: SettingsForm) {
                                             disabled={status === 'executing' || session.session.user.isOAuth === true}
                                             checked={field.value}
                                             onCheckedChange={field.onChange} />
-                                    </FormControl>
-                                    <FormMessage />
-                                </FormItem>
-                            )}
-                        />
-                        <FormField
-                            control={form.control}
-                            name="newPassword"
-                            render={({ field }) => (
-                                <FormItem>
-                                    <FormLabel className="block">Password</FormLabel>
-                                    <FormControl>
-                                        <input
-                                            {...field}
-                                            placeholder="********"
-                                            type="password"
-                                            disabled={status === 'executing'} />
                                     </FormControl>
                                     <FormMessage />
                                 </FormItem>

@@ -8,14 +8,13 @@ import * as z from "zod";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { useAction } from "next-safe-action/hooks";
-import { cn } from "@/lib/utils"
-import { useState } from "react";
+import { cn } from "@/lib/utils";
+import { useState, Suspense } from "react"; // 导入 Suspense
 import { FormSuccess } from "./form-success";
 import { FormError } from "./form-error";
 import { NewPasswordSchema } from "@/types/new-password-schema";
 import { newPassword } from "@/server/actions/new-password";
 import { useSearchParams } from "next/navigation";
-
 
 export const NewPasswordForm = () => {
     const form = useForm<z.infer<typeof NewPasswordSchema>>({
@@ -25,22 +24,47 @@ export const NewPasswordForm = () => {
         },
     });
 
-    const searchParams = useSearchParams()
-    const token = searchParams.get('token')
-    const [error, setError] = useState("")
-    const [success, setSuccess] = useState("")
+    // Suspense 处理 searchParams 获取
+    const SearchParamsWrapper = () => {
+        const searchParams = useSearchParams();
+        const token = searchParams.get('token');
+        return <PasswordForm token={token} />;
+    };
+
+    return (
+        <Suspense fallback={<div>Loading...</div>}>
+            <SearchParamsWrapper />
+        </Suspense>
+    );
+};
+
+const PasswordForm = ({ token }: { token: string | null }) => {
+    const [error, setError] = useState("");
+    const [success, setSuccess] = useState("");
 
     const { execute, status } = useAction(newPassword, {
         onSuccess(response) {
             const data = response?.data;
-            if (data?.error) setError(data.error)
-            if (data?.success) setSuccess(data.success)
+            if (data?.error) setError(data.error);
+            if (data?.success) setSuccess(data.success);
         }
-    })
+    });
+
+    const form = useForm<z.infer<typeof NewPasswordSchema>>({
+        resolver: zodResolver(NewPasswordSchema),
+        defaultValues: {
+            password: "",
+        },
+    });
 
     const onSubmit = (values: z.infer<typeof NewPasswordSchema>) => {
-        execute({ password: values.password, token })
-    }
+        if (token) {
+            execute({ password: values.password, token });
+        } else {
+            setError("Invalid token.");
+        }
+    };
+
     return (
         <AuthCard
             cardTitle="Enter a new password"
@@ -89,5 +113,5 @@ export const NewPasswordForm = () => {
                 </Form>
             </div>
         </AuthCard>
-    )
-}
+    );
+};
