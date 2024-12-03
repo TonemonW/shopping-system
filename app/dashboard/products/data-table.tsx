@@ -2,10 +2,12 @@
 
 import {
     ColumnDef,
+    ColumnFiltersState,
     flexRender,
     getCoreRowModel,
     getFilteredRowModel,
     getPaginationRowModel,
+    SortingState,
     useReactTable,
 } from "@tanstack/react-table"
 import {
