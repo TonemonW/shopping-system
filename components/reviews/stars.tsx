@@ -25,7 +25,7 @@ export default function Stars({ rating, totalReviews, size = 14 }: {
                 <span className="text-secondary-foreground font-bold text-sm m1-2">
                     {totalReviews} reviews</span>
             ) : (
-                <span className="text-xs font-medium ml-2">no reviews</span>
+                <span className="text-xs font-medium ml-2"></span>
             )}
         </div>
     )
