@@ -9,8 +9,8 @@ import { VariantsWithImagesTags } from "@/lib/infer-type"
 import { cn } from "@/lib/utils"
 import Image from "next/image"
 import { useSearchParams } from "next/navigation"
-import { useEffect, useState } from "react"
-export default function ProductShowcase({ variants }: { variants: VariantsWithImagesTags[] }
+import { Suspense, useEffect, useState } from "react"
+function ProductShowcaseContent({ variants }: { variants: VariantsWithImagesTags[] }
 ) {
     const [api, setApi] = useState<CarouselApi>()
     const [activeThumbnail, setActiveThumbnail] = useState([0])
@@ -79,4 +79,11 @@ export default function ProductShowcase({ variants }: { variants: VariantsWithIm
         </Carousel>
 
     )
+}
+export default function ProductShowcase({ variants }: { variants: VariantsWithImagesTags[] }) {
+    return (
+        <Suspense fallback={<p>Loading...</p>}>
+            <ProductShowcaseContent variants={variants} />
+        </Suspense>
+    );
 }

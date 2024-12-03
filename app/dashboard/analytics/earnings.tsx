@@ -4,12 +4,12 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { TotalOrders } from "@/lib/infer-type"
 import { cn } from "@/lib/utils";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useMemo } from "react";
+import { Suspense, useMemo } from "react";
 import { weeklyChart } from "./weekly-chart";
 import { Bar, BarChart, ResponsiveContainer, Tooltip } from "recharts"
 import { monthlyChart } from "./monthly-chart";
 
-export default function Earnings({ totalOrders }: { totalOrders: TotalOrders[] }) {
+function EarningsContent({ totalOrders }: { totalOrders: TotalOrders[] }) {
     const router = useRouter()
     const searchParams = useSearchParams();
     const filter = searchParams.get("filter") || "week"
@@ -97,4 +97,12 @@ export default function Earnings({ totalOrders }: { totalOrders: TotalOrders[] }
             </CardHeader>
         </Card>
     )
+}
+
+export default function Earnings({ totalOrders }: { totalOrders: TotalOrders[] }) {
+    return (
+        <Suspense fallback={<p>Loading...</p>}>
+            <EarningsContent totalOrders={totalOrders} />
+        </Suspense>
+    );
 }

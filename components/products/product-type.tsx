@@ -2,10 +2,11 @@
 import { VariantsWithImagesTags } from "@/lib/infer-type"
 import { motion } from "motion/react"
 import { useSearchParams } from "next/navigation"
+import { Suspense } from "react"
 
 
 
-export default function ProductType({
+function ProductTypeContent({
     variants,
 }: {
     variants: VariantsWithImagesTags[]
@@ -27,4 +28,15 @@ export default function ProductType({
             )
         }
     })
+}
+export default function ProductForm({
+    variants,
+}: {
+    variants: VariantsWithImagesTags[]
+}) {
+    return (
+        <Suspense fallback={<p>Loading...</p>}>
+            <ProductTypeContent variants={variants} />
+        </Suspense>
+    )
 }

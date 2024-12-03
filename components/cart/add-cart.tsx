@@ -1,12 +1,12 @@
 "use client"
 import { useCartStore } from "@/lib/client-store"
-import { useState } from "react"
+import { Suspense, useState } from "react"
 import { Button } from "../ui/button"
 import { Minus, Plus } from "lucide-react"
 import { toast } from "sonner"
 import { redirect, useSearchParams } from "next/navigation"
 
-export default function AddCart() {
+function AddCartContent() {
     const { addToCart } = useCartStore()
     const [quantity, setQuantity] = useState(1)
     const params = useSearchParams();
@@ -54,5 +54,12 @@ export default function AddCart() {
                 })
             }}>Add to cart</Button>
         </>
+    )
+}
+export default function AddCart() {
+    return (
+        <Suspense fallback={<p>Loading...</p>}>
+            <AddCartContent />
+        </Suspense>
     )
 }

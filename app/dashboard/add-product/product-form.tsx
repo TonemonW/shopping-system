@@ -27,9 +27,9 @@ import { useAction } from "next-safe-action/hooks"
 import { useRouter, useSearchParams } from "next/navigation"
 import { toast } from "sonner"
 import { getProduct } from "@/server/actions/get-product"
-import { useEffect } from "react"
+import { Suspense, useEffect } from "react"
 
-export default function ProductForm() {
+function ProductFormContent() {
     const form = useForm<zProductSchema>({
         resolver: zodResolver(ProductSchema),
         defaultValues: {
@@ -66,7 +66,7 @@ export default function ProductForm() {
         if (editMode) {
             checkProduct(parseInt(editMode))
         }
-    })
+    }, [])
 
 
     const { execute, status } = useAction(createProduct, {
@@ -76,7 +76,7 @@ export default function ProductForm() {
                 toast.success(response.data.success)
             }
         },
-        onExecute: () => {
+        onExecute: (response) => {
             if (editMode) { toast.loading("Editing Product") }
             if (!editMode) {
                 toast.loading("creating Product")
@@ -157,5 +157,12 @@ export default function ProductForm() {
                 </Form>
             </CardContent>
         </Card>
+    )
+}
+export default function ProductForm() {
+    return (
+        <Suspense fallback={<p>Loading...</p>}>
+            <ProductFormContent />
+        </Suspense>
     )
 }

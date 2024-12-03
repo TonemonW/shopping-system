@@ -2,9 +2,10 @@
 import { useRouter, useSearchParams } from "next/navigation"
 import { Badge } from "../ui/badge"
 import { cn } from "@/lib/utils"
+import { Suspense } from "react"
 
 
-export default function ProductTags() {
+function ProductTagsContent() {
     const router = useRouter()
     const params = useSearchParams()
     const tag = params.get("tag")
@@ -64,5 +65,12 @@ export default function ProductTags() {
                 StellaLou
             </Badge>
         </div>
+    )
+}
+export default function ProductTags() {
+    return (
+        <Suspense fallback={<p>Loading...</p>}>
+            <ProductTagsContent />
+        </Suspense>
     )
 }

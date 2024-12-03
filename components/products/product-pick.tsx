@@ -2,8 +2,9 @@
 
 import { cn } from "@/lib/utils"
 import { useRouter, useSearchParams } from "next/navigation"
+import { Suspense } from "react"
 
-export default function ProductPick({
+function ProductPickContent({
     id,
     color,
     productType,
@@ -37,5 +38,20 @@ export default function ProductPick({
                 )
             }
         ></div>
+    )
+}
+export default function ProductPick(props: {
+    id: number
+    color: string
+    productType: string
+    title: string
+    price: number
+    productID: number
+    image: string
+}) {
+    return (
+        <Suspense fallback={<div className="w-8 h-8 rounded-full bg-gray-200"></div>}>
+            <ProductPickContent {...props} />
+        </Suspense>
     )
 }

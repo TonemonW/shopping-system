@@ -6,14 +6,14 @@ import Link from "next/link"
 import { Badge } from "../ui/badge"
 import formatPrice from "@/lib/format-price"
 import { useSearchParams } from "next/navigation"
-import { useMemo } from "react"
+import { Suspense, useMemo } from "react"
 
 type ProductTypes = {
     variants: VariantsWithProduct[]
 }
 
 
-export default function Products({ variants }: ProductTypes) {
+function ProductsContent({ variants }: ProductTypes) {
     const params = useSearchParams()
     const paramTag = params.get("tag")
     const filtered = useMemo(() => {
@@ -66,5 +66,12 @@ export default function Products({ variants }: ProductTypes) {
                 </Link>
             ))}
         </main>
+    )
+}
+export default function Products({ variants }: ProductTypes) {
+    return (
+        <Suspense fallback={<p>Loading products...</p>}>
+            <ProductsContent variants={variants} />
+        </Suspense>
     )
 }

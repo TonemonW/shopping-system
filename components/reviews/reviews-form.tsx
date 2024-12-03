@@ -26,9 +26,10 @@ import { Star } from "lucide-react"
 import { useAction } from "next-safe-action/hooks"
 import { addReview } from "@/server/actions/add-review"
 import { toast } from "sonner"
+import { Suspense } from "react"
 
 
-export default function ReviewsForm() {
+function ReviewsFormContent() {
     const params = useSearchParams();
     const productID = Number(params.get('productID'))
 
@@ -130,5 +131,12 @@ export default function ReviewsForm() {
                 </Form>
             </PopoverContent>
         </Popover >
+    )
+}
+export default function ReviewsForm() {
+    return (
+        <Suspense fallback={<p>Loading...</p>}>
+            <ReviewsFormContent />
+        </Suspense>
     )
 }

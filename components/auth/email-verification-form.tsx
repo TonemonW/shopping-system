@@ -3,12 +3,12 @@
 import { newVerification } from "@/server/actions/token";
 import { useSearchParams } from "next/navigation"
 import { useRouter } from "next/navigation"
-import { useCallback, useEffect, useState } from "react";
+import { Suspense, useCallback, useEffect, useState } from "react";
 import { AuthCard } from "@/components/auth/auth-card";
 import { FormSuccess } from "./form-success";
 import { FormError } from "./form-error";
 
-export const EmailVerificationForm = () => {
+const EmailVerification = () => {
     const token = useSearchParams().get("token")
     const router = useRouter()
     const [error, setError] = useState("")
@@ -49,4 +49,12 @@ export const EmailVerificationForm = () => {
             <FormError message={error} />
         </div>
     </AuthCard>
+}
+
+export default function EmailVerificationForm() {
+    return (
+        <Suspense fallback={<p>Loading...</p>}>
+            <EmailVerification />
+        </Suspense>
+    )
 }
